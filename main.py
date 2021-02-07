@@ -13,18 +13,8 @@ def bustplayer(n):
   if n>21:
     print (f"Player is bust")
 
-def randcard():
-  r1=random.randint(0,12)
-  return cards[r1]
-
 def givecard(n):
-  n.append(randcard())
-
-def cardsum(n):
-  sum=0
-  for i in n:
-    sum+=i
-  return sum
+  n.append(random.choice(cards))
 
 while chip>0:
   print(f"Your chips: {chip}")
@@ -46,16 +36,26 @@ while chip>0:
   chip-=bet
   print(f"Your chips remaining is: {chip}")
 
+  if 11 in pcard and sum(pcard)>21:
+    pcard.remove(11)
+    pcard.append(1)
+    print("Your Ace(11) has changed to Ace(1)")
+
+  if 11 in dcard and sum(dcard)>21:
+    dcard.remove(11)
+    dcard.append(1)
+    print("Your Ace(11) has changed to Ace(1)")
+
   print(f"Your cards: {pcard}")
   print(f"Dealer's cards: [{dcard[0]}, *]")
 
-  if cardsum(pcard)==21:
+  if sum(pcard)==21:
     print("You win")
     chip=chip+bet*2
     print(f"Your chips remaining is: {chip}")
     bust=True
 
-  if cardsum(pcard)>21:
+  if sum(pcard)>21:
     print("You bust")
     bust=True
     hit=False
@@ -67,11 +67,11 @@ while chip>0:
       givecard(pcard)
     else: #Stay
       hit=False
-      if cardsum(pcard)>cardsum(dcard):
+      if sum(pcard)>sum(dcard):
         print(f"Your cards: {pcard}")
         print(f"Dealer's cards: {dcard}")
         print("You win")
-      elif cardsum(dcard)>cardsum(pcard):
+      elif sum(dcard)>sum(pcard):
         print(f"Your cards: {pcard}")
         print(f"Dealer's cards: {dcard}")
         print("You lost")
